@@ -8,6 +8,9 @@ import {
 import { Component, VERSION } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
+import * as uuid from 'uuid';
+import { sha256 } from 'js-sha256';
+
 
 @Component({
   selector: 'app-root',
@@ -88,9 +91,9 @@ export class AppComponent {
       this.authorization_code = params['auth_code'];
       if (this.authorization_code != undefined && this.authorization_code!="") {
         var payload={
-          "client_id":"1",
+          "client_id":"6463e66af46aaba4f0569ffc",
           "redirect_url":"http://localhost:4200",
-          "client_secret":"1",
+          "code_verifier":localStorage.getItem("codeVerifier"),
           "auth_code":this.authorization_code
         }
         this.http
@@ -102,6 +105,7 @@ export class AppComponent {
           .subscribe({
             next: (res) => {
               localStorage.setItem("token",res.toString());
+              localStorage.removeItem("codeVerifier");
               window.location.replace("/");
             },
             error: (err) => console.log(err),
@@ -112,6 +116,11 @@ export class AppComponent {
   }
 
   login() {
-    window.location.replace("http://localhost:3000/auth?client_id=1&redirect_url=http://localhost:4200");
+    var client_id="6463e66af46aaba4f0569ffc"
+    var redirect_url="http://localhost:4200"
+    var codeVerifier=uuid.v4();
+    localStorage.setItem("codeVerifier",btoa(codeVerifier));
+    var codeChallenge=btoa(sha256(codeVerifier))
+    window.location.replace("http://localhost:3000/auth?client_id="+client_id+"&redirect_url="+redirect_url+"&code_challenge="+codeChallenge);
   }
 }

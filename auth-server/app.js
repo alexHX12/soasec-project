@@ -6,6 +6,9 @@ var logger = require('morgan');
 const bodyParser = require("body-parser");
 var cors = require('cors')
 
+const { dbConnection } = require("./dbConnection");
+
+dbConnection.connectToDB();
 
 var rootRouter = require('./routes/root');
 

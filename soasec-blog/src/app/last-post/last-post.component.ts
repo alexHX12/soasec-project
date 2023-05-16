@@ -9,7 +9,7 @@ export class LastPostComponent {
   all_post:any
 
   ngOnInit(): void {
-    fetch("http://localhost:3000/posts").then(res=>{
+    fetch("http://localhost:8000/posts").then(res=>{
       res.json().then(res2=>{
         this.all_post=res2
       })
