@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+    blog-frontend:
+        image: blog-frontend
+        build:
+            context: ./soasec-blog/
+        ports:
+          - 4200:4200
+        restart: always
+
+    mongo_auth:
+        image: mongo
+        restart: always
+        volumes:
+            - auth-db:/data/db
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: test
+
+    auth:
+        image: blog-auth
+        build:
+            context: ./auth-server
+        restart: always
+        ports:
+            - 3000:3000
+        environment:
+            DB_HOST: ${AUTH_DB_HOST-mongo_auth}
+            DB_PORT: ${AUTH_DB_PORT-27017}
+
+    mongo_api:
+        image: mongo
+        restart: always
+        volumes:
+            - api-db:/data/db
+        ports:
+            - 27018:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: test
+
+    api:
+        image: blog-api
+        build:
+            context: ./soasec-blog-backend
+        restart: always
+        ports:
+            - 8000:8000
+        environment:
+            DB_HOST: ${API_DB_HOST-mongo_api}
+            DB_PORT: ${API_DB_PORT-27017}
+volumes:
+    auth-db:
+    api-db:

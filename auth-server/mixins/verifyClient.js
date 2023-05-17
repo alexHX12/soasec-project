@@ -14,7 +14,7 @@ module.exports = {
             return null
         }
         //check the correct association with the callback url
-        if(c_client.redirect_url!=redirect_url){
+        if(c_client==null||c_client.redirect_url!=redirect_url){
             return null
         }
         return c_client
