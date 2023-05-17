@@ -13,9 +13,9 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker images
       run: |
-       docker build ./soasec-blog --tag ghcr.io/alexHX12/soasec-blog-frontend:latest
-       docker push ghcr.io/alexHX12/soasec-blog-frontend:latest
-       docker build ./auth-server --tag ghcr.io/alexHX12/soasec-auth-server:latest
-       docker push ghcr.io/alexHX12/soasec-auth-server:latest
-       docker build ./soasec-blog-backend --tag ghcr.io/alexHX12/soasec-blog-api:latest
-       docker push ghcr.io/alexHX12/soasec-blog-api:latest
+       docker build ./soasec-blog --tag ghcr.io/alexhx12/soasec-blog-frontend:latest
+       docker push ghcr.io/alexhx12/soasec-blog-frontend:latest
+       docker build ./auth-server --tag ghcr.io/alexhx12/soasec-auth-server:latest
+       docker push ghcr.io/alexhx12/soasec-auth-server:latest
+       docker build ./soasec-blog-backend --tag ghcr.io/alexhx12/soasec-blog-api:latest
+       docker push ghcr.io/alexhx12/soasec-blog-api:latest
