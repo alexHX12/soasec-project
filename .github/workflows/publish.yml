@@ -11,11 +11,21 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the Docker images
+    - name: Build blog frontend
+      working-directory: ./soasec-blog
       run: |
-       docker build ./soasec-blog --tag ghcr.io/alexhx12/soasec-blog-frontend:latest
+       npm install -g @angular/cli@latest
+       npm install
+       ng build
+       docker build . --tag ghcr.io/alexhx12/soasec-blog-frontend:latest
        docker push ghcr.io/alexhx12/soasec-blog-frontend:latest
-       docker build ./auth-server --tag ghcr.io/alexhx12/soasec-auth-server:latest
+    - name: Build auth server
+      working-directory: ./auth-server
+      run: |
+       docker build . --tag ghcr.io/alexhx12/soasec-auth-server:latest
        docker push ghcr.io/alexhx12/soasec-auth-server:latest
-       docker build ./soasec-blog-backend --tag ghcr.io/alexhx12/soasec-blog-api:latest
+    - name: Build blog API
+      working-directory: ./soasec-blog-backend/
+      run: |
+       docker build . --tag ghcr.io/alexhx12/soasec-blog-api:latest
        docker push ghcr.io/alexhx12/soasec-blog-api:latest
