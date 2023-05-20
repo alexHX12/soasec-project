@@ -89,12 +89,14 @@ export class AppComponent {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       this.authorization_code = params['auth_code'];
+      var state=params['state']
       if (this.authorization_code != undefined && this.authorization_code!="") {
         var payload={
           "client_id":"6463e66af46aaba4f0569ffc",
           "redirect_url":"http://localhost:4200",
           "code_verifier":localStorage.getItem("codeVerifier"),
-          "auth_code":this.authorization_code
+          "auth_code":this.authorization_code,
+          "state":state
         }
         this.http
           .post('http://localhost:3000/token', JSON.stringify(payload),
@@ -103,8 +105,9 @@ export class AppComponent {
             "Accept": "application/json"
       }})
           .subscribe({
-            next: (res) => {
-              localStorage.setItem("token",res.toString());
+            next: (res:any) => {
+              localStorage.setItem("id_token",res.id_token);
+              localStorage.setItem("access_token",res.access_token);
               localStorage.removeItem("codeVerifier");
               window.location.replace("/");
             },
@@ -119,8 +122,9 @@ export class AppComponent {
     var client_id="6463e66af46aaba4f0569ffc"
     var redirect_url="http://localhost:4200"
     var codeVerifier=uuid.v4();
+    var state=uuid.v4()
     localStorage.setItem("codeVerifier",btoa(codeVerifier));
     var codeChallenge=btoa(sha256(codeVerifier))
-    window.location.replace("http://localhost:3000/auth?client_id="+client_id+"&redirect_url="+redirect_url+"&code_challenge="+codeChallenge);
+    window.location.replace("http://localhost:3000/auth?client_id="+client_id+"&redirect_url="+redirect_url+"&code_challenge="+codeChallenge+"&state="+state);
   }
 }

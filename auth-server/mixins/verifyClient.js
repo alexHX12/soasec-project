@@ -25,7 +25,13 @@ module.exports = {
         if(c_client==null||authorization_code==undefined){
             return null
         }
-        if(!c_client.authorization_codes.includes(authorization_code)){
+        auth_code_exists=false
+        c_client.authorization_codes.forEach(el => {
+            if(el.code==authorization_code){
+                auth_code_exists=true
+            }
+        });
+        if(!auth_code_exists){
             return null
         }
         return c_client

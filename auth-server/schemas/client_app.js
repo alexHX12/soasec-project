@@ -15,13 +15,22 @@ const clientApp = new Schema(
       required: true
     },
 
-    authorization_codes:{
-      type: Array
-    },
+    authorization_codes:[
+      {
+        user_id:{
+          type:String,
+          required:true
+        },
+        code:{
+          type:String,
+          required:true
+        }
+      }
+    ],
 
     code_challenges:[
       {
-        session_id:{
+        state:{
           type:String,
           required:true
         },
