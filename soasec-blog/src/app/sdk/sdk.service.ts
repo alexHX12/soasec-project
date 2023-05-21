@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 export class SdkService {
   private url = "http://localhost:3000";
   private client_id="6463e66af46aaba4f0569ffc"
-  private redirect_url="http://localhost:4200"
+  private redirect_url="http://blog.localhost"
 
   constructor(private http: HttpClient) {
   }
@@ -48,7 +48,7 @@ export class SdkService {
     if (authorization_code != undefined && authorization_code != "") {
       var payload = {
         "client_id": "6463e66af46aaba4f0569ffc",
-        "redirect_url": "http://localhost:4200",
+        "redirect_url": "http://blog.localhost",
         "code_verifier": localStorage.getItem("codeVerifier"),
         "auth_code": authorization_code,
         "state": state

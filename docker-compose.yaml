@@ -1,6 +1,13 @@
 version: '3'
 services:
 
+    reverse-proxy:
+        image: apache
+        build:
+            context: ./reverse-proxy/
+        ports:
+          - 80:80
+
     blog-frontend:
         image: blog-frontend
         build:

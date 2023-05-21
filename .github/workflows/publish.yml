@@ -29,3 +29,8 @@ jobs:
       run: |
        docker build . --tag ghcr.io/alexhx12/soasec-blog-api:latest
        docker push ghcr.io/alexhx12/soasec-blog-api:latest
+    - name: Build reverse proxy
+      working-directory: ./reverse-proxy/
+      run: |
+       docker build . --tag ghcr.io/alexhx12/soasec-reverse-proxy:latest
+       docker push ghcr.io/alexhx12/soasec-reverse-proxy:latest
