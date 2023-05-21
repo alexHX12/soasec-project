@@ -8,9 +8,7 @@ import {
 import { Component, VERSION } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
-import * as uuid from 'uuid';
-import { sha256 } from 'js-sha256';
-
+import { SdkService } from "./sdk/sdk.service";
 
 @Component({
   selector: 'app-root',
@@ -62,7 +60,6 @@ export class AppComponent {
   title = 'soasec-blog';
   mobileMenuOpen = true;
   profileMenuOpen = false;
-  loggedIn = false;
 
   get openCloseMobileTrigger() {
     return this.mobileMenuOpen ? "open" : "closed";
@@ -80,51 +77,25 @@ export class AppComponent {
     }
   }
 
-  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) {
+  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, public sdk:SdkService) {
 
   }
 
-  authorization_code = ""
+  user_info:any=undefined
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.authorization_code = params['auth_code'];
-      var state=params['state']
-      if (this.authorization_code != undefined && this.authorization_code!="") {
-        var payload={
-          "client_id":"6463e66af46aaba4f0569ffc",
-          "redirect_url":"http://localhost:4200",
-          "code_verifier":localStorage.getItem("codeVerifier"),
-          "auth_code":this.authorization_code,
-          "state":state
-        }
-        this.http
-          .post('http://localhost:3000/token', JSON.stringify(payload),
-          {headers:{
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-      }})
-          .subscribe({
-            next: (res:any) => {
-              localStorage.setItem("id_token",res.id_token);
-              localStorage.setItem("access_token",res.access_token);
-              localStorage.removeItem("codeVerifier");
-              window.location.replace("/");
-            },
-            error: (err) => console.log(err),
-          });
-
+    if(this.sdk.isLoggedIn()){
+      var id_token:any=this.sdk.getIDToken();
+      this.user_info={
+        "name":id_token.name,
+        "email":id_token.email
       }
+    }
+    this.activatedRoute.queryParams.subscribe(params => {
+      var authorization_code = params['auth_code'];
+      var state=params['state']
+      this.sdk.getToken(authorization_code,state)
     });
   }
 
-  login() {
-    var client_id="6463e66af46aaba4f0569ffc"
-    var redirect_url="http://localhost:4200"
-    var codeVerifier=uuid.v4();
-    var state=uuid.v4()
-    localStorage.setItem("codeVerifier",btoa(codeVerifier));
-    var codeChallenge=btoa(sha256(codeVerifier))
-    window.location.replace("http://localhost:3000/auth?client_id="+client_id+"&redirect_url="+redirect_url+"&code_challenge="+codeChallenge+"&state="+state);
-  }
 }

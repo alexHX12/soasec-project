@@ -5,5 +5,6 @@ var auth=require('../controller/auth')
 router.get('/auth', auth.authUser);
 router.post('/signin', auth.signIn);
 router.post('/token', auth.getToken);
+router.get('/logout', auth.logout);
 
 module.exports = router;

@@ -124,5 +124,11 @@ module.exports = {
             "access_token":generator.genAccessToken(user),
             "id_token":generator.genIDToken(user)
         })
+    },
+
+    logout: function (req, res, next) {
+        redirect_url=req.query.redirect_url
+        res.clearCookie("auth_sid",{ httpOnly: true });
+        res.redirect(redirect_url);
     }
 }
