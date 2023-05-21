@@ -9,7 +9,8 @@ import jwt_decode from 'jwt-decode';
 })
 
 export class SdkService {
-  private url = "http://localhost:3000";
+  private url="http://api.localhost"
+  private auth_url = "http://auth.localhost";
   private client_id="6463e66af46aaba4f0569ffc"
   private redirect_url="http://blog.localhost"
 
@@ -41,7 +42,7 @@ export class SdkService {
     var state=uuid.v4()
     localStorage.setItem("codeVerifier",btoa(codeVerifier));
     var codeChallenge=btoa(sha256(codeVerifier))
-    window.location.replace(this.url + "/auth?client_id=" + this.client_id + "&redirect_url=" + this.redirect_url + "&code_challenge=" + codeChallenge + "&state=" + state);
+    window.location.replace(this.auth_url + "/auth?client_id=" + this.client_id + "&redirect_url=" + this.redirect_url + "&code_challenge=" + codeChallenge + "&state=" + state);
   }
 
   public getToken(authorization_code: string, state: string) {
@@ -54,7 +55,7 @@ export class SdkService {
         "state": state
       }
       this.http
-        .post('http://localhost:3000/token', JSON.stringify(payload),
+        .post(this.auth_url+'/token', JSON.stringify(payload),
           {
             headers: {
               "Content-Type": "application/json",
@@ -76,7 +77,7 @@ export class SdkService {
   public logout() {
     localStorage.removeItem("id_token");
     localStorage.removeItem("access_token");
-    window.location.replace(this.url + "/logout?redirect_url="+this.redirect_url);
+    window.location.replace(this.auth_url + "/logout?redirect_url="+this.redirect_url);
   }
 
   private getGenToken(token_str:string){

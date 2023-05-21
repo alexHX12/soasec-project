@@ -12,8 +12,6 @@ services:
         image: blog-frontend
         build:
             context: ./soasec-blog/
-        ports:
-          - 4200:4200
         restart: always
 
     mongo_auth:
@@ -54,8 +52,6 @@ services:
         build:
             context: ./soasec-blog-backend
         restart: always
-        ports:
-            - 8000:8000
         environment:
             DB_HOST: ${API_DB_HOST-mongo_api}
             DB_PORT: ${API_DB_PORT-27017}
