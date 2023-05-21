@@ -32,29 +32,29 @@
                   <%= client_name %> is requesting access to your account:
                 </h5>
                 <p>Sign in to grant <%= client_name %> access to your info</p>
-                <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
                 <form action="/signin" method="post">
-                <div class="form-outline form-white mb-4">
-                  <input type="email" name="username" id="typeEmailX" class="form-control form-control-lg" placeholder="Email" />
-                </div>
+                  <div class="form-outline form-white mb-4">
+                    <input type="email" name="username" id="typeEmailX" class="form-control form-control-lg"
+                      placeholder="Email" />
+                  </div>
 
-                <div class="form-outline form-white mb-4">
-                  <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg"
-                    placeholder="Password" />
-                </div>
+                  <div class="form-outline form-white mb-4">
+                    <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg"
+                      placeholder="Password" />
+                  </div>
 
-                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
-                <input type="hidden" name="client_id" value="<%= client_id %>">
-                <input type="hidden" name="redirect_url" value="<%= redirect_url %>">
-                <input type="hidden" name="state" value="<%= state %>">
+                  <input type="hidden" name="client_id" value="<%= client_id %>">
+                  <input type="hidden" name="redirect_url" value="<%= redirect_url %>">
+                  <input type="hidden" name="state" value="<%= state %>">
 
-                <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
-              </form>
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                </form>
               </div>
 
               <div>
-                <p class="mb-0">Don't have an account? <a href="#!" class="text-white-50 fw-bold">Sign Up</a>
+                <p class="mb-0">Don't have an account? <a href="/user-register?client_id=<%= client_id %>&redirect_url=<%= redirect_url %>&code_challenge=<%= code_challenge %>&state=<%= state %>" class="text-white-50 fw-bold">Sign
+                    Up</a>
                 </p>
               </div>
 

@@ -13,7 +13,7 @@ module.exports = {
     
     genAccessToken:function (user){
         payload= {
-            "iss":"test_issuer",
+            "iss":"auth_server",
             "sub":user._id,
             "exp":Date.now()+1000,
             "scope":"my_amazing_scope"
@@ -24,7 +24,7 @@ module.exports = {
 
     genIDToken: function(user){
         payload= {
-            "iss":"test_issuer",
+            "iss":"auth_server",
             "sub":user._id,
             "exp":Date.now()+1000,
             "name":user.name,

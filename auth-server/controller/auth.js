@@ -5,6 +5,7 @@ const generator=require('../mixins/generator')
 const sha256 = require('js-sha256');
 const base64url = require('base64url');
 var uuid=require('uuid')
+const bcrypt = require('bcrypt');
 
 module.exports = {
     //this function define how user will authenticate to the Auth server
@@ -21,7 +22,15 @@ module.exports = {
             basicError.invalidRequest(res)
             return
         }
-        c_client.code_challenges.push({state:state,hash:code_challenge})
+        code_c_found=false;
+        c_client.code_challenges.forEach(el => {
+            if(el.state==state&&el.hash==code_challenge){
+                code_c_found=true;
+            }
+        });
+        if(!code_c_found){
+            c_client.code_challenges.push({state:state,hash:code_challenge})
+        }
         await c_client.save()
         if (cookie != undefined) {
             auth_code=await generator.genAuthCode(c_client,cookie)
@@ -30,6 +39,7 @@ module.exports = {
             res.render("index.ejs",{
                 client_id:client_id,
                 client_name:c_client.name,
+                code_challenge:code_challenge,
                 redirect_url:redirect_url,
                 state:state
             })
@@ -54,8 +64,7 @@ module.exports = {
         } catch (error) {
             
         }
-        //Crypt password
-        if(user==null||user.password!=password){
+        if (user==null || !await bcrypt.compare(password, user.password)){
             basicError.unauthorized(res)
             return
         }

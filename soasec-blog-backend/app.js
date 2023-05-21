@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+var jwt = require('jsonwebtoken');
+const fs = require('fs')
 
 const { dbConnection } = require("./dbConnection");
 
@@ -11,8 +13,32 @@ dbConnection.connectToDB();
 
 var postRouter = require('./routes/post');
 
+function jwtVerify (req, res, next) {
+  console.log('verifying token...');
+  const authHeader = String(req.headers['authorization'] || '');
+  var token=null;
+  if (authHeader.startsWith('Token ')) {
+    token = authHeader.substring(6, authHeader.length);
+  }else{
+    res.status(404);
+    res.end();
+  }
+
+  try {
+    var decoded = jwt.verify(token, fs.readFileSync('./public.pem'));
+    console.log(decoded);
+    next()
+  } catch(err) {
+    console.log(err);
+    console.log("Auth error");
+    res.status(404);
+    res.end();
+  }
+}
+
 var app = express();
 app.use(cors());
+app.use(jwtVerify);
 
 app.use(logger('dev'));
 app.use(express.json());
