@@ -19,6 +19,14 @@ jobs:
        ng build
        docker build . --tag ghcr.io/alexhx12/soasec-blog-frontend:latest
        docker push ghcr.io/alexhx12/soasec-blog-frontend:latest
+    - name: Build blog area riservata
+      working-directory: ./soasec-blog-area_riservata
+      run: |
+       npm install -g @angular/cli@latest
+       npm install
+       ng build
+       docker build . --tag ghcr.io/alexhx12/soasec-blog-frontend-area_riservata:latest
+       docker push ghcr.io/alexhx12/soasec-blog-frontend-area_riservata:latest
     - name: Build auth server
       working-directory: ./auth-server
       run: |

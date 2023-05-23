@@ -13,6 +13,12 @@ services:
         build:
             context: ./soasec-blog/
         restart: always
+    
+    blog-frontend-area_riservata:
+        image: blog-frontend-area_riservata
+        build:
+            context: ./soasec-blog-area_riservata/
+        restart: always
 
     mongo_auth:
         image: mongo

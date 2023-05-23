@@ -11,8 +11,8 @@ import jwt_decode from 'jwt-decode';
 export class SdkService {
   private url="http://api.localhost"
   private auth_url = "http://auth.localhost";
-  private client_id="6463e66af46aaba4f0569ffc"
-  private redirect_url="http://blog.localhost"
+  private client_id="646cd23b4b47521f08e25dd0"
+  private redirect_url="http://area-riservata.localhost"
 
   constructor(private http: HttpClient) {
   }
@@ -48,7 +48,7 @@ export class SdkService {
   public getToken(authorization_code: string, state: string) {
     if (authorization_code != undefined && authorization_code != "") {
       var payload = {
-        "client_id": "6463e66af46aaba4f0569ffc",
+        "client_id": "646cd23b4b47521f08e25dd0",
         "redirect_url": this.redirect_url,
         "code_verifier": localStorage.getItem("codeVerifier"),
         "auth_code": authorization_code,
