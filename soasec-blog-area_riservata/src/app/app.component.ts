@@ -1,16 +1,83 @@
-import { Component } from '@angular/core';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from "@angular/animations";
+import { Component, VERSION } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { SdkService } from './sdk/sdk.service';
+import { HttpClient } from '@angular/common/http';
+import { SdkService } from "./sdk/sdk.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger("openCloseMobile", [
+      // ...
+      state(
+        "open",
+        style({
+          opacity: 1,
+          transform: "scale(1, 1)"
+        })
+      ),
+      state(
+        "closed",
+        style({
+          opacity: 0,
+          transform: "scale(0.95, 0.95)"
+        })
+      ),
+      transition("open => closed", [animate("100ms ease-in")]),
+      transition("closed => open", [animate("200ms ease-out")])
+    ]),
+    trigger("openCloseProfile", [
+      // ...
+      state(
+        "open",
+        style({
+          opacity: 1,
+          transform: "scale(1, 1)"
+        })
+      ),
+      state(
+        "closed",
+        style({
+          opacity: 0,
+          transform: "scale(0.95, 0.95)"
+        })
+      ),
+      transition("open => closed", [animate("100ms ease-in")]),
+      transition("closed => open", [animate("200ms ease-out")])
+    ])
+  ]
 })
-export class AppComponent {
-  title = 'soasec-blog-area_riservata';
 
-  constructor(private activatedRoute: ActivatedRoute, public sdk: SdkService) {
+export class AppComponent {
+  title = 'soasec-blog';
+  mobileMenuOpen = true;
+  profileMenuOpen = false;
+
+  get openCloseMobileTrigger() {
+    return this.mobileMenuOpen ? "open" : "closed";
+  }
+
+  get openCloseProfileTrigger() {
+    return this.profileMenuOpen ? "open" : "closed";
+  }
+
+  toggleMenu(dropdown: string) {
+    if (dropdown == "mobile-menu") {
+      this.mobileMenuOpen = !this.mobileMenuOpen;
+    } else if (dropdown == "profile-menu") {
+      this.profileMenuOpen = !this.profileMenuOpen;
+    }
+  }
+
+  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, public sdk:SdkService) {
 
   }
 
