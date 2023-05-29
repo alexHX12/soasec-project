@@ -3,16 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import * as uuid from 'uuid';
 import { sha256 } from 'js-sha256';
 import jwt_decode from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class SdkService {
-  private url="http://api.localhost"
-  private auth_url = "http://auth.localhost";
-  private client_id="6463e66af46aaba4f0569ffc"
-  private redirect_url="http://blog.localhost"
+  private url=environment.apiServer
+  private auth_url = environment.authServer;
+  private client_id=environment.client_id
+  private redirect_url=environment.redirectURL
 
   constructor(private http: HttpClient) {
   }
@@ -48,7 +49,7 @@ export class SdkService {
   public getToken(authorization_code: string, state: string) {
     if (authorization_code != undefined && authorization_code != "") {
       var payload = {
-        "client_id": "6463e66af46aaba4f0569ffc",
+        "client_id": this.client_id,
         "redirect_url": this.redirect_url,
         "code_verifier": localStorage.getItem("codeVerifier"),
         "auth_code": authorization_code,

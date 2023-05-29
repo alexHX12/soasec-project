@@ -9,6 +9,7 @@ import { Component, VERSION } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { SdkService } from "./sdk/sdk.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -60,6 +61,7 @@ export class AppComponent {
   title = 'soasec-blog';
   mobileMenuOpen = true;
   profileMenuOpen = false;
+  dashboardURL=environment.dashboardURL;
 
   get openCloseMobileTrigger() {
     return this.mobileMenuOpen ? "open" : "closed";

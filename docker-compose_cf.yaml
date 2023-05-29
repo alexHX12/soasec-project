@@ -1,0 +1,65 @@
+version: '3'
+services:
+
+    cloudflared:
+        container_name: cloudflared
+        image: cloudflare/cloudflared:2022.3.2
+        restart: on-failure
+        volumes:
+            - C:\Users\alex\.cloudflared\:/etc/cloudflared/
+        command: tunnel --config /etc/cloudflared/config.yaml run soasec-tunnel
+
+    blog-frontend:
+        image: blog-frontend
+        build:
+            context: ./soasec-blog/
+        restart: always
+    
+    blog-frontend-area_riservata:
+        image: blog-frontend-area_riservata
+        build:
+            context: ./soasec-blog-area_riservata/
+        restart: always
+
+    mongo_auth:
+        image: mongo
+        restart: always
+        volumes:
+            - auth-db:/data/db
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: test
+
+    auth:
+        image: blog-auth
+        build:
+            context: ./auth-server
+        restart: always
+        environment:
+            DB_HOST: ${AUTH_DB_HOST-mongo_auth}
+            DB_PORT: ${AUTH_DB_PORT-27017}
+
+    mongo_api:
+        image: mongo
+        restart: always
+        volumes:
+            - api-db:/data/db
+        ports:
+            - 27018:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: test
+
+    api:
+        image: blog-api
+        build:
+            context: ./soasec-blog-backend
+        restart: always
+        environment:
+            DB_HOST: ${API_DB_HOST-mongo_api}
+            DB_PORT: ${API_DB_PORT-27017}
+volumes:
+    auth-db:
+    api-db:

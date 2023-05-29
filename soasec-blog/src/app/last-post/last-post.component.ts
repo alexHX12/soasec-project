@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-last-post',
@@ -9,7 +10,8 @@ export class LastPostComponent {
   all_post:any
 
   ngOnInit(): void {
-    fetch("http://api.localhost/posts").then(res=>{
+    //TO CHANGE
+    fetch(environment.apiServer+"/posts").then(res=>{
       res.json().then(res2=>{
         this.all_post=res2
       })
