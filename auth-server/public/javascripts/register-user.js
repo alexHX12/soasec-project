@@ -1,8 +1,16 @@
-function registerUser() {
+toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+
+async function registerUser() {
     payload={
         "username" : document.getElementById("username").value,
         "name" : document.getElementById("name").value,
-        "password" : document.getElementById("password").value
+        "password" : document.getElementById("password").value,
+        "image": await toBase64(document.getElementById("image").files[0])
     }
     fetch('/user-register', {
         method: 'POST',

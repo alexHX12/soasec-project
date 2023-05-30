@@ -15,17 +15,8 @@ export class DashboardComponent {
   }
 
   ngOnInit(): void {
-    //TO CHANGE
-    fetch(environment.apiServer+"/posts",{
-      headers: {
-        'Authorization': 'Token ' + localStorage.getItem("access_token"),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      method: 'GET'
-    }).then(res=>{
-      res.json().then(res2=>{
-        this.all_post=res2
-      })
+    this.sdk.getMyPosts().subscribe(res=>{
+      this.all_post=res;
     })
   }
 }

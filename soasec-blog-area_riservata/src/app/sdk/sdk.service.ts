@@ -18,12 +18,19 @@ export class SdkService {
   constructor(private http: HttpClient) {
   }
 
+  /*
+  headers: {
+        'Authorization': 'Token ' + localStorage.getItem("access_token"),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+  */
+
   private sendData(path: string, data: any) {
-    return this.http.post(this.url + path, JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+    return this.http.post(this.url + path, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
   }
 
   private getData(path: string) {
-    return this.http.get(this.url + path);
+    return this.http.get(this.url + path,{ headers: { 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
   }
 
   private updateData(path: string, data: any) {
@@ -81,16 +88,28 @@ export class SdkService {
     window.location.replace(this.auth_url + "/logout?redirect_url="+this.redirect_url);
   }
 
-  private getGenToken(token_str:string){
+  private getGenToken(token_str:string):any{
     var id_token_str:any=localStorage.getItem(token_str);
     return jwt_decode(id_token_str);
   }
 
-  public getIDToken(){
+  public getIDToken():any{
     return this.getGenToken("id_token");
   }
 
-  public getAccessToken(){
+  public getAccessToken():any{
     return this.getGenToken("access_token");
+  }
+
+  public getMyPosts(){
+    return this.getData("/posts/?user_id="+this.getAccessToken().sub);
+  }
+
+  public getSinglePost(post_id:string){
+    return this.getData("/posts/"+post_id);
+  }
+
+  public createPost(post:any){
+    return this.sendData("/posts",post);
   }
 }

@@ -23,7 +23,7 @@ export class SdkService {
   }
 
   private getData(path: string) {
-    return this.http.get(this.url + path);
+    return this.http.get(this.url + path, { headers: { 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
   }
 
   private updateData(path: string, data: any) {
@@ -92,5 +92,9 @@ export class SdkService {
 
   public getAccessToken(){
     return this.getGenToken("access_token");
+  }
+
+  public getPosts(){
+    return this.getData("/posts");
   }
 }

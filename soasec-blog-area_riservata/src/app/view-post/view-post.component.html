@@ -1,0 +1,12 @@
+<div *ngIf="post!=undefined">
+    <a href="#">
+        <img class="rounded-t-lg" src="{{post.image}}" alt="" />
+    </a>
+    <div class="p-5">
+        <a href="#">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-black">{{post.title}}</h5>
+        </a>
+        <p class="mb-3 font-normal text-gray-700 text-gray-400">{{post.short_text}}</p>
+        <p class="mb-3 font-normal text-gray-700 text-gray-400">{{post.text}}</p>
+    </div>
+</div>

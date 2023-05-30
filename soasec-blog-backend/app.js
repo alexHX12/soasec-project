@@ -25,8 +25,8 @@ function jwtVerify (req, res, next) {
   }
 
   try {
-    var decoded = jwt.verify(token, fs.readFileSync('./public.pem'));
-    console.log(decoded);
+    req.jwt_decoded = jwt.verify(token, fs.readFileSync('./public.pem'));
+    console.log(req.jwt_decoded);
     next()
   } catch(err) {
     console.log(err);

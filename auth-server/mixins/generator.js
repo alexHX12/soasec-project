@@ -28,7 +28,8 @@ module.exports = {
             "sub":user._id,
             "exp":Date.now()+1000,
             "name":user.name,
-            "email":user.username
+            "email":user.username,
+            "image":user.image
         }
         id_token=jwt.sign(payload,fs.readFileSync('./private.pem'),{ algorithm: 'RS256' })
         return id_token

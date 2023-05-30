@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewPostComponent } from './new-post/new-post.component';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    NewPostComponent
+    NewPostComponent,
+    ViewPostComponent
   ],
   imports: [
     BrowserModule,

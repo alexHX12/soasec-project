@@ -90,7 +90,8 @@ export class AppComponent {
       var id_token: any = this.sdk.getIDToken();
       this.user_info = {
         "name": id_token.name,
-        "email": id_token.email
+        "email": id_token.email,
+        "image": id_token.image
       }
     } else {
       if (window.location.search == "") {

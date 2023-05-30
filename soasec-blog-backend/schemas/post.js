@@ -11,7 +11,7 @@ const post = new Schema(
     },
 
     members_only: {
-      type: String,
+      type: Boolean,
       required: true
     },
 
@@ -28,6 +28,11 @@ const post = new Schema(
     title: {
       type: String,
       required: true
+    },
+
+    short_text: {
+      type: String,
+      required: true,
     },
 
     text: {

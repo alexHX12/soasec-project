@@ -35,12 +35,13 @@ module.exports = {
         username=req.body.username
         u_name=req.body.name
         password=req.body.password
-        if(username==undefined||username==""||u_name==undefined||u_name==""||password==undefined||password==""){
+        image=req.body.image
+        if(username==undefined||username==""||u_name==undefined||u_name==""||password==undefined||password==""||image==undefined||image==""){
             res.status(400);
             res.end();
         }else{
             bcrypt.hash(password, saltRounds, function(err, hash) {
-                const new_user = new User({ "username": username, "name": u_name , "password": hash});
+                const new_user = new User({ "username": username, "name": u_name , "password": hash, "image": image});
                 new_user.save();
                 res.end();
             });            

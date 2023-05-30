@@ -5,8 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LastPostComponent } from './last-post/last-post.component';
 import { PopularPostComponent } from './popular-post/popular-post.component';
+import { AllPostComponent } from './all-post/all-post.component';
 import { PopularAuthorComponent } from './popular-author/popular-author.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,8 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     DashboardComponent,
-    LastPostComponent,
     PopularPostComponent,
+    AllPostComponent,
     PopularAuthorComponent
   ],
   imports: [
