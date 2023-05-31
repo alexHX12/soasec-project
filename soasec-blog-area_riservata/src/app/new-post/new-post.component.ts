@@ -42,7 +42,7 @@ export class NewPostComponent {
       "title":title,
       "short_text":short_text,
       "text":text,
-      "image":await this.toBase64(image),
+      "image":image,
       "members_only":members_only
     }).subscribe(res=>{
       this.post_added=true;

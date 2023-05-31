@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { SdkService } from '../sdk/sdk.service';
 
 @Component({
   selector: 'app-popular-post',
@@ -9,12 +10,13 @@ import { environment } from '../../environments/environment';
 export class PopularPostComponent {
   all_post:any
 
+  constructor(public sdk:SdkService) {
+
+  }
+
   ngOnInit(): void {
-    //TO CHANGE
-    fetch(environment.apiServer+"/posts").then(res=>{
-      res.json().then(res2=>{
-        this.all_post=res2
-      })
+    this.sdk.getPopularPostsAll().subscribe(res=>{
+      this.all_post=res;
     })
   }
 

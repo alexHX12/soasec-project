@@ -43,6 +43,12 @@ const post = new Schema(
     image: {
       type: String,
       required: false
+    },
+
+    views:{
+      type: Number,
+      required:true,
+      default:0
     }
   },
   {

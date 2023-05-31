@@ -54,6 +54,8 @@ services:
 
     api:
         image: blog-api
+        volumes:
+            - api-uploads:/app/public/uploads
         build:
             context: ./soasec-blog-backend
         restart: always
@@ -63,3 +65,4 @@ services:
 volumes:
     auth-db:
     api-db:
+    api-uploads:

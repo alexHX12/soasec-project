@@ -14,6 +14,7 @@ export class SdkService {
   private auth_url = environment.authServer;
   private client_id=environment.client_id
   private redirect_url=environment.redirectURL
+  public postImageURL=this.url+"/public/uploads/";
 
   constructor(private http: HttpClient) {
   }
@@ -96,5 +97,21 @@ export class SdkService {
 
   public getPosts(){
     return this.getData("/posts");
+  }
+
+  public getSinglePost(post_id:string){
+    return this.getData("/posts/"+post_id);
+  }
+
+  public getPopularPostsMin(){
+    return this.getData("/posts/?popular=1&limit=4");
+  }
+
+  public getPopularPostsAll(){
+    return this.getData("/posts/?popular=1&limit=10");
+  }
+
+  public getAuthors(){
+    return this.getData("/authors");
   }
 }

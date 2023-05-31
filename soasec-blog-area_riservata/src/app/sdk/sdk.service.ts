@@ -10,23 +10,21 @@ import { environment } from '../../environments/environment';
 })
 
 export class SdkService {
-  private url=environment.apiServer
+  private url=environment.apiServer;
   private auth_url = environment.authServer;
-  private client_id=environment.client_id
-  private redirect_url=environment.redirectURL
+  private client_id=environment.client_id;
+  private redirect_url=environment.redirectURL;
+  public postImageURL=this.url+"/public/uploads/";
 
   constructor(private http: HttpClient) {
   }
 
-  /*
-  headers: {
-        'Authorization': 'Token ' + localStorage.getItem("access_token"),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-  */
-
   private sendData(path: string, data: any) {
     return this.http.post(this.url + path, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
+  }
+
+  private sendDataForm(path: string, data: any) {
+    return this.http.post(this.url + path, data, { headers: { 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
   }
 
   private getData(path: string) {
@@ -110,6 +108,13 @@ export class SdkService {
   }
 
   public createPost(post:any){
-    return this.sendData("/posts",post);
+    const formData = new FormData();
+    formData.append('author', post.author);
+    formData.append('title', post.title);
+    formData.append('short_text', post.short_text);
+    formData.append('text', post.text);
+    formData.append('image', post.image);
+    formData.append('members_only', post.members_only);
+    return this.sendDataForm("/posts",formData);
   }
 }

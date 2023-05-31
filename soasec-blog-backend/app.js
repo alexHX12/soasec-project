@@ -5,13 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 var jwt = require('jsonwebtoken');
-const fs = require('fs')
+const fs = require('fs');
 
 const { dbConnection } = require("./dbConnection");
 
 dbConnection.connectToDB();
 
 var postRouter = require('./routes/post');
+var authorRouter = require('./routes/author');
 
 function jwtVerify (req, res, next) {
   console.log('verifying token...');
@@ -38,14 +39,16 @@ function jwtVerify (req, res, next) {
 
 var app = express();
 app.use(cors());
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.use(jwtVerify);
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/posts', postRouter);
+app.use('/authors', authorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,9 +61,10 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  console.log(err.message);
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send();
 });
 
 module.exports = app;

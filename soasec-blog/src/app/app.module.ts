@@ -7,8 +7,9 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PopularPostComponent } from './popular-post/popular-post.component';
 import { AllPostComponent } from './all-post/all-post.component';
-import { PopularAuthorComponent } from './popular-author/popular-author.component';
+import { AllAuthorComponent } from './all-author/all-author.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     DashboardComponent,
     PopularPostComponent,
     AllPostComponent,
-    PopularAuthorComponent
+    AllAuthorComponent,
+    ViewPostComponent
   ],
   imports: [
     BrowserModule,
