@@ -15,7 +15,7 @@ module.exports = {
         payload= {
             "iss":"auth_server",
             "sub":user._id,
-            "exp":Date.now()+1000,
+            "exp":Date.now()+1000*1200,
             "scope":"my_amazing_scope"
         }
         access_token=jwt.sign(payload,fs.readFileSync('./private.pem'),{ algorithm: 'RS256' })
@@ -26,7 +26,7 @@ module.exports = {
         payload= {
             "iss":"auth_server",
             "sub":user._id,
-            "exp":Date.now()+1000,
+            "exp":Date.now()+1000*1200,
             "name":user.name,
             "email":user.username,
             "image":user.image

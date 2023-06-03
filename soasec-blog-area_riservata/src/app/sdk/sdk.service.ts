@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 })
 
 export class SdkService {
+  private domain=environment.domain;
   private url=environment.apiServer;
   private auth_url = environment.authServer;
   private client_id=environment.client_id;
@@ -21,15 +22,15 @@ export class SdkService {
   }
 
   private sendData(path: string, data: any) {
-    return this.http.post(this.url + path, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
+    return this.http.post(this.url + path, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', 'Authorization': 'Token ' + this.getCookieValue("access_token") } });
   }
 
   private sendDataForm(path: string, data: any) {
-    return this.http.post(this.url + path, data, { headers: { 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
+    return this.http.post(this.url + path, data, { headers: { 'Authorization': 'Token ' + this.getCookieValue("access_token") } });
   }
 
   private getData(path: string) {
-    return this.http.get(this.url + path,{ headers: { 'Authorization': 'Token ' + localStorage.getItem("access_token") } });
+    return this.http.get(this.url + path,{ headers: { 'Authorization': 'Token ' + this.getCookieValue("access_token") } });
   }
 
   private updateData(path: string, data: any) {
@@ -41,7 +42,7 @@ export class SdkService {
   }
 
   public isLoggedIn(){
-    return localStorage.getItem("id_token")!=undefined&&localStorage.getItem("access_token")!=undefined
+    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""
   }
 
   public login() {
@@ -71,8 +72,18 @@ export class SdkService {
           })
         .subscribe({
           next: (res: any) => {
-            localStorage.setItem("id_token", res.id_token);
-            localStorage.setItem("access_token", res.access_token);
+             //document.cookie = 'cookie1=test; expires=Sun, 1 Jan 2023 00:00:00 UTC; path=/'
+            var decoded_id_token:any=jwt_decode(res.id_token);
+            var decoded_access_token:any=jwt_decode(res.access_token);
+            var id_token_expires = "", access_token_expires="";
+            var date = new Date();
+            date.setTime(decoded_id_token.exp);
+            id_token_expires = date.toUTCString();
+            date.setTime(decoded_access_token.exp);
+            access_token_expires = date.toUTCString();
+
+            document.cookie = "id_token=" + res.id_token  +"; expires="+ id_token_expires + "; path=/; domain=."+this.domain;
+            document.cookie = "access_token=" + res.access_token  +"; expires="+ access_token_expires + "; path=/; domain=."+this.domain;
             localStorage.removeItem("codeVerifier");
             window.location.replace("/");
           },
@@ -81,14 +92,19 @@ export class SdkService {
     }
   }
 
+  private getCookieValue = (name:string) => (
+    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+  ) 
+
   public logout() {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("access_token");
+    //document.cookie = 'cookie2=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
+    document.cookie = 'id_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;domain=.'+this.domain;
+    document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;domain=.'+this.domain;
     window.location.replace(this.auth_url + "/logout?redirect_url="+this.redirect_url);
   }
 
   private getGenToken(token_str:string):any{
-    var id_token_str:any=localStorage.getItem(token_str);
+    var id_token_str:any=this.getCookieValue(token_str);
     return jwt_decode(id_token_str);
   }
 

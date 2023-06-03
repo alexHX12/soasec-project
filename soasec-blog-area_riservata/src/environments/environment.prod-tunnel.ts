@@ -4,6 +4,7 @@ export const environment = {
     authServer: 'https://auth.x-tunnel.net',
     apiServer: 'https://api.x-tunnel.net',
     redirectURL: 'https://area-riservata.x-tunnel.net',
-    dashboardURL: 'https://blog.x-tunnel.net'
+    dashboardURL: 'https://blog.x-tunnel.net',
+    domain: 'x-tunnel.net'
   };
   

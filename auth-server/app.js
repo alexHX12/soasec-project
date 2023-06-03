@@ -13,7 +13,7 @@ const { dbConnection } = require("./dbConnection");
 dbConnection.connectToDB();
 
 function jwtVerify (req, res, next) {
-  console.log('verifying token...');
+  //console.log('verifying token...');
   const authHeader = String(req.headers['authorization'] || '');
   var token=null;
   if (authHeader.startsWith('Token ')) {
@@ -25,7 +25,7 @@ function jwtVerify (req, res, next) {
 
   try {
     req.jwt_decoded = jwt.verify(token, fs.readFileSync('./public.pem'));
-    console.log(req.jwt_decoded);
+    //console.log(req.jwt_decoded);
     next()
   } catch(err) {
     console.log(err);
