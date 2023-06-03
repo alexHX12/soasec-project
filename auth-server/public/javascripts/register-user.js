@@ -1,27 +1,22 @@
-toBase64 = (file) => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
-
 async function registerUser() {
-    payload={
-        "username" : document.getElementById("username").value,
-        "name" : document.getElementById("name").value,
-        "password" : document.getElementById("password").value,
-        "image": await toBase64(document.getElementById("image").files[0])
+    var username = document.getElementById("username").value;
+    var name = document.getElementById("name").value;
+    var password = document.getElementById("password").value;
+    var image = document.getElementById("image").files[0];
+    if (username == "" || username == undefined || name == "" || name == undefined || password == "" || password == undefined || image == undefined) {
+        return
     }
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('name', name);
+    formData.append('password', password);
+    formData.append('image', image);
     fetch('/user-register', {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+        body: formData
     }).then(res => {
-        if(res.status==200){
-            document.getElementById("registration-successfull").style.display="block";
+        if (res.status == 200) {
+            document.getElementById("registration-successfull").style.display = "block";
         }
     })
 

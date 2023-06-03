@@ -34,7 +34,7 @@
           <p class="text-gray-700 text-base">{{post['short_text']}}</p>
         </div>
         <div class="flex items-center">
-          <img class="w-10 h-10 rounded-full mr-4" src="{{post['user_image']}}" alt="Avatar">
+          <img class="w-10 h-10 rounded-full mr-4" src="{{this.sdk.profileImageURL+post['user_image']}}" alt="Avatar">
           <div class="text-sm">
             <p class="text-gray-900 leading-none">{{post['author']}}</p>
             <p class="text-gray-600">{{post['date']}}</p>

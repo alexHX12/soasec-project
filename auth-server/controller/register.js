@@ -51,16 +51,16 @@ module.exports = {
         });
     },
     registerUserBackend: async function (req, res, next) {
+        const path_tokens = req.file.path.split('/');
         username=req.body.username
         u_name=req.body.name
         password=req.body.password
-        image=req.body.image
-        if(username==undefined||username==""||u_name==undefined||u_name==""||password==undefined||password==""||image==undefined||image==""){
+        if(username==undefined||username==""||u_name==undefined||u_name==""||password==undefined||password==""){
             res.status(400);
             res.end();
         }else{
             bcrypt.hash(password, saltRounds, function(err, hash) {
-                const new_user = new User({ "username": username, "name": u_name , "password": hash, "image": image});
+                const new_user = new User({ "username": username, "name": u_name , "password": hash, "image": path_tokens[2]});
                 new_user.save();
                 res.end();
             });            

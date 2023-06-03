@@ -14,6 +14,7 @@ export class SdkService {
   private auth_url = environment.authServer;
   private client_id=environment.client_id
   private redirect_url=environment.redirectURL
+  public profileImageURL=this.auth_url+"/public/uploads/";
   public postImageURL=this.url+"/public/uploads/";
 
   constructor(private http: HttpClient) {

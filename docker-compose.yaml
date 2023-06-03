@@ -33,11 +33,11 @@ services:
 
     auth:
         image: blog-auth
+        volumes:
+            - auth-uploads:/app/public/uploads
         build:
             context: ./auth-server
         restart: always
-        ports:
-            - 3000:3000
         environment:
             DB_HOST: ${AUTH_DB_HOST-mongo_auth}
             DB_PORT: ${AUTH_DB_PORT-27017}
@@ -65,5 +65,6 @@ services:
             DB_PORT: ${API_DB_PORT-27017}
 volumes:
     auth-db:
+    auth-uploads:
     api-db:
     api-uploads:
