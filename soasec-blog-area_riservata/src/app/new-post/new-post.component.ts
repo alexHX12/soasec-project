@@ -37,8 +37,6 @@ export class NewPostComponent {
       return
     }
     this.sdk.createPost({
-      //TO CHANGE
-      "author":this.sdk.getIDToken().name,
       "title":title,
       "short_text":short_text,
       "text":text,

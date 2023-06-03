@@ -8,8 +8,16 @@ var jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const { dbConnection } = require("./dbConnection");
+const { authSdk } = require('./auth_sdk');
 
 dbConnection.connectToDB();
+authSdk.getAuthToken().then(res=>{
+  res.json().then(res2=>{
+    global.access_token=res2.access_token;
+    console.log(global.access_token);  
+  });
+});
+
 
 var postRouter = require('./routes/post');
 var authorRouter = require('./routes/author');

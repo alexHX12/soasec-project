@@ -17,6 +17,9 @@ export class PopularPostComponent {
   ngOnInit(): void {
     this.sdk.getPopularPostsAll().subscribe(res=>{
       this.all_post=res;
+      this.all_post.forEach((el:any) => {
+        el.date=(new Date(el.date)).toLocaleString();
+      });
     })
   }
 

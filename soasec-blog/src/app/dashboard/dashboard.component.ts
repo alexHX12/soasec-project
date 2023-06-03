@@ -18,6 +18,9 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.sdk.getPosts().subscribe(res=>{
       this.all_post=res;
+      this.all_post.forEach((el:any) => {
+        el.date=(new Date(el.date)).toLocaleString();
+      });
     })
     this.sdk.getPopularPostsMin().subscribe(res=>{
       this.popular_post=res;

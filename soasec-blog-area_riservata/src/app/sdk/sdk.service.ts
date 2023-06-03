@@ -109,7 +109,6 @@ export class SdkService {
 
   public createPost(post:any){
     const formData = new FormData();
-    formData.append('author', post.author);
     formData.append('title', post.title);
     formData.append('short_text', post.short_text);
     formData.append('text', post.text);

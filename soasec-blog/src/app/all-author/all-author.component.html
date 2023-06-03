@@ -1,8 +1,8 @@
 <div class="m-2 grid gap-4 grid-cols-4 grid-rows-2">
 <div *ngFor="let author of this.all_author;" class="m-5 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="m-5 flex flex-col items-center pb-10">
-        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Bonnie image"/>
-        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{author._id.author}}</h5>
+        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{author.user_image}}" alt="Avatar"/>
+        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{author.author}}</h5>
         <span class="text-sm text-gray-500 dark:text-gray-400">User info 1</span>
         <div class="flex mt-4 space-x-3 md:mt-6">
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">User description</h5>    

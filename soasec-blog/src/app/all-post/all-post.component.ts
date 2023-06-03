@@ -16,6 +16,9 @@ export class AllPostComponent {
   ngOnInit(): void {
     this.sdk.getPosts().subscribe(res=>{
       this.all_post=res;
+      this.all_post.forEach((el:any) => {
+        el.date=(new Date(el.date)).toLocaleString();
+      });
     })
   }
 

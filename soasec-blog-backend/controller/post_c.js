@@ -1,3 +1,4 @@
+const { authSdk } = require("../auth_sdk");
 const Post=require("../schemas/post");
 
 async function getUserPosts(req,res,next){
@@ -11,7 +12,11 @@ async function getUserPosts(req,res,next){
 }
 
 async function getPopularPosts(req,res,next){
-    const popular_posts=await Post.find().sort({"views":"desc"}).limit(req.query.limit);
+    const popular_posts=await Post.find().sort({"views":"desc"}).limit(req.query.limit).lean();
+    for(var i=0;i<popular_posts.length;i++){
+        user_info=await authSdk.getUserInfo(popular_posts[i].user_id);
+        popular_posts[i].user_image=user_info.image;
+    }
     res.status(200).send(popular_posts);
 }
 
@@ -22,27 +27,39 @@ module.exports={
         }else if(req.query.popular=="1"&&req.query.popular!=null&&req.query.limit!=""&&req.query.limit!=null){
             await getPopularPosts(req,res,next);
         }else{
-            all_posts=await Post.find()
+            all_posts=await Post.find().lean();
+            for(var i=0;i<all_posts.length;i++){
+                user_info=await authSdk.getUserInfo(all_posts[i].user_id);
+                all_posts[i].user_image=user_info.image;
+            }
             res.contentType('application/json');
             res.send(all_posts);
         }
     },
+    //user:
+    //username-->email
+    //name
+    //image
     getSinglePost: async function(req,res,next){
         single_post=await Post.findById(req.params.id);
         single_post.views++;
         await single_post.save();
+        user_info=await authSdk.getUserInfo(single_post.user_id);
+        single_post.user_name=user_info.name;
+        single_post.user_image=user_info.image;
         res.contentType('application/json');
         res.send(single_post);
     },
     addPost: async function(req,res,next){
         const path_tokens = req.file.path.split('/');
+        user_info=await authSdk.getUserInfo(req.jwt_decoded.sub);
         new_post_req={
             "user_id":req.jwt_decoded.sub,
             "date":Date.now(),
             "short_text":req.body.short_text,
             "text":req.body.text,
             "members_only":req.body.members_only=="true",
-            "author":req.body.author,
+            "author":user_info.name,
             "title":req.body.title,
             "image":path_tokens[2]
         }

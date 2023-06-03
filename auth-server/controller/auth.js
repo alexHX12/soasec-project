@@ -6,6 +6,7 @@ const sha256 = require('js-sha256');
 const base64url = require('base64url');
 var uuid=require('uuid')
 const bcrypt = require('bcrypt');
+const M2M = require('../schemas/m2m');
 
 module.exports = {
     //this function define how user will authenticate to the Auth server
@@ -139,5 +140,27 @@ module.exports = {
         redirect_url=req.query.redirect_url
         res.clearCookie("auth_sid",{ httpOnly: true });
         res.redirect(redirect_url);
+    },
+
+    getM2MToken: async function (req, res, next) {
+        client_id=req.body.client_id;
+        client_secret=req.body.client_secret;
+        if(client_id==undefined||client_id==""||client_secret==undefined||client_secret==""){
+            basicError.invalidRequest(res);
+            return;
+        }
+        m2m_client=null
+        try{
+            m2m_client=await M2M.findById(client_id).lean();
+        } catch (error) {
+            
+        }
+        if(m2m_client==null || !await bcrypt.compare(client_secret, m2m_client.client_secret)){
+            basicError.unauthorized(res)
+            return
+        }
+        res.json({
+            "access_token":generator.genAccessToken(m2m_client)
+        })
     }
 }

@@ -1,5 +1,7 @@
-const ClientApp=require('../schemas/client_app')
+const ClientApp=require('../schemas/client_app');
+const M2M = require('../schemas/m2m');
 const User=require('../schemas/user')
+var uuid=require('uuid');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -17,6 +19,23 @@ module.exports = {
             const new_app = new ClientApp({ "name": app_name, "redirect_url": redirect_url });
             new_app.save();
             res.json({"client_id":new_app._id})
+        }
+    },
+    registerM2M: async function (req, res, next) {
+        res.render("m2m-register.ejs");
+    },
+    registerM2MBackend: async function (req, res, next) {
+        app_name=req.body.app_name
+        if(app_name==undefined||app_name==""){
+            res.status(400);
+            res.end();
+        }else{
+            var client_secret=uuid.v4();
+            bcrypt.hash(client_secret, saltRounds, function(err, hash) {
+                const new_app = new M2M({ "name": app_name, "client_secret": hash });
+                new_app.save();
+                res.json({"client_id":new_app._id,"client_secret":client_secret})
+            });
         }
     },
     registerUser: async function (req, res, next) {
