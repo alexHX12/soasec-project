@@ -42,7 +42,7 @@ export class SdkService {
   }
 
   public isLoggedIn(){
-    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""
+    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""&&this.getIDToken().aud==this.client_id&&this.getAccessToken().aud==this.client_id;
   }
 
   public login() {

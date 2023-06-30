@@ -38,7 +38,15 @@ export class SdkService {
   }
 
   public isLoggedIn(){
-    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""
+    var id_token:any=this.getIDToken();
+    var id_token_aud=id_token.aud;
+    var access_token:any=this.getAccessToken();
+    var access_token_aud=access_token.aud;
+    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""&&id_token_aud==this.client_id&&access_token_aud==this.client_id;
+  }
+
+  public isLoggedInOnDomainSite(){
+    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!="";
   }
 
   public login() {
@@ -100,16 +108,16 @@ export class SdkService {
     window.location.replace(this.auth_url + "/logout?redirect_url="+this.redirect_url);
   }
 
-  private getGenToken(token_str:string){
+  private getGenToken(token_str:string):any{
     var id_token_str:any=this.getCookieValue(token_str);
     return jwt_decode(id_token_str);
   }
 
-  public getIDToken(){
+  public getIDToken():any{
     return this.getGenToken("id_token");
   }
 
-  public getAccessToken(){
+  public getAccessToken():any{
     return this.getGenToken("access_token");
   }
 

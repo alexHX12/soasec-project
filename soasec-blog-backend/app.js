@@ -12,7 +12,6 @@ dbConnection.connectToDB();
 authSdk.getAuthToken().then(res=>{
   res.json().then(res2=>{
     global.access_token=res2.access_token;
-    console.log(global.access_token);  
   });
 });
 

@@ -93,6 +93,8 @@ export class AppComponent {
         "email":id_token.email,
         "image":id_token.image
       }
+    }else if(this.sdk.isLoggedInOnDomainSite()&&window.location.search==""){
+      this.sdk.login()
     }
     this.activatedRoute.queryParams.subscribe(params => {
       var authorization_code = params['auth_code'];

@@ -140,8 +140,8 @@ module.exports = {
             c_client.code_challenges.pull(codeT)
             c_client.authorization_codes.pull(auth_code_obj)
             res.json({
-                "access_token": generator.genAccessToken(user),
-                "id_token": generator.genIDToken(user)
+                "access_token": generator.genAccessToken(c_client,user),
+                "id_token": generator.genIDToken(c_client,user)
             })
             //for some reason that the humanity can't explain why this must be the last operation
             await c_client.save();
@@ -173,7 +173,7 @@ module.exports = {
             return
         }
         res.json({
-            "access_token": generator.genAccessToken(m2m_client)
+            "access_token": generator.genAccessToken(m2m_client, m2m_client)
         })
     }
 }
