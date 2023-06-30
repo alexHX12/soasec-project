@@ -10,9 +10,9 @@ const user = new Schema(
       required: true
     },
 
-    name:{
-      type:String,
-      required:true
+    name: {
+      type: String,
+      required: true
     },
 
     password: {
@@ -24,9 +24,24 @@ const user = new Schema(
       type: String,
       required: true
     },
+
+    app_roles:[
+      {
+        app_id:{
+          type: String,
+          required: true
+        },
+        roles:[
+          {
+            type: String,
+            required: true
+          }
+        ]
+      }
+    ],
   },
-  {
-    collection: "user",
+{
+  collection: "user",
   }
 );
 

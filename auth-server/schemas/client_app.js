@@ -15,6 +15,21 @@ const clientApp = new Schema(
       required: true
     },
 
+    roles:[
+      {
+        role_name:{
+          type: String,
+          required: true
+        },
+        scopes:[
+          {
+            type: String,
+            required: true
+          }
+        ]
+      }
+    ],
+
     authorization_codes:[
       {
         user_id:{

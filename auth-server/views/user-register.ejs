@@ -51,12 +51,37 @@
                             </div>
                         </div>
                     </div>
+                    <p>Seleziona ruoli:</p>
+                    <!-- Ruoli per App:-->
+                    <table class="table">
+                        <% for(var i=0; i<client_apps.length; i++) {%>
+                            <thead>
+                                <tr>
+                                    <th colspan="100%"><%= client_apps[i].name %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <% for(var j=0; j<client_apps[i].roles.length; j++) {%>
+                                    <td>
+                                        <input class="form-check-input app-roles" type="checkbox" value="<%= 'app-'+client_apps[i]._id+'-role-'+client_apps[i].roles[j]._id %>" id="<%= 'app-'+client_apps[i]._id+'-role-'+client_apps[i].roles[j]._id %>">
+                                        <label class="form-check-label" for="<%= 'app-'+client_apps[i]._id+'-role-'+client_apps[i].roles[j]._id %>">
+                                            <%= client_apps[i].roles[j].role_name %>
+                                        </label>
+                                    </td>
+                                    <% } %>
+                                </tr>
+                            </tbody>
+                            <% } %>
+                        </table>
                 </div>
                 <button type="button" class="btnSubmit" onclick="registerUser()">Submit</button>
             </div>
 
             <div class="note" id="registration-successfull" style="display: none;">
-                <p>Registrazione completata , <a href="/auth?client_id=<%= client_id %>&redirect_url=<%= redirect_url %>&code_challenge=<%= code_challenge %>&state=<%= state %>">torna al login</a></p>
+                <p>Registrazione completata , <a
+                        href="/auth?client_id=<%= client_id %>&redirect_url=<%= redirect_url %>&code_challenge=<%= code_challenge %>&state=<%= state %>">torna
+                        al login</a></p>
             </div>
 
         </div>
