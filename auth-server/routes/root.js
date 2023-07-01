@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 
 router.get('/auth', auth.authUser);
 router.post('/signin', auth.signIn);
+router.post('/approve-scopes', auth.approveScopes);
 router.post('/token', auth.getToken);
 router.post('/m2m-token', auth.getM2MToken);
 router.get('/logout', auth.logout);

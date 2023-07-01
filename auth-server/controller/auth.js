@@ -72,12 +72,48 @@ module.exports = {
                 basicError.unauthorized(res)
                 return
             }
-            sid = uuid.v4()
-            auth_code = await generator.genAuthCode(c_client, user._id)
-            res.cookie('auth_sid', user._id, { maxAge: 900000, httpOnly: true });
-            res.redirect(redirect_url + "?auth_code=" + auth_code + "&state=" + state);
+
+            app_roles=null;
+            app_scopes=[];
+            if(user.app_roles!=undefined&&c_client.roles!=undefined){
+                user.app_roles.forEach(el => {
+                    if(el.app_id==c_client._id){
+                        app_roles=el.roles;
+                    }
+                });
+                c_client.roles.forEach(c_app_role => {
+                    app_roles.forEach(u_app_role => {
+                        if(c_app_role._id==u_app_role){
+                            c_app_role.scopes.forEach(c_app_scope => {
+                                app_scopes.push(c_app_scope);
+                            });
+                        }
+                    });
+                });
+            }
+
+            res.render("approve-scopes.ejs", {
+                client_id: client_id,
+                client_name: c_client.name,
+                redirect_url: redirect_url,
+                state: state,
+                scopes: app_scopes
+            })
         });
         session.endSession();
+    },
+
+    approveScopes: async function(req,res,next){
+        client_id = req.body.client_id
+        redirect_url = req.body.redirect_url
+        state= req.body.state
+        if(client_id==undefined||redirect_url==undefined||state==undefined){
+            basicError.invalidRequest(res)
+            return
+        }
+        auth_code = await generator.genAuthCode(c_client, user._id)
+        res.cookie('auth_sid', user._id, { maxAge: 900000, httpOnly: true });
+        res.redirect(redirect_url + "?auth_code=" + auth_code + "&state=" + state);
     },
     //invoked by the client app to request an access token
     getToken: async function (req, res, next) {
