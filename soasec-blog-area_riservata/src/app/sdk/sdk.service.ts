@@ -132,6 +132,7 @@ export class SdkService {
     formData.append('text', post.text);
     formData.append('image', post.image);
     formData.append('members_only', post.members_only);
+    formData.append('premium', post.premium);
     return this.sendDataForm("/posts",formData);
   }
 }

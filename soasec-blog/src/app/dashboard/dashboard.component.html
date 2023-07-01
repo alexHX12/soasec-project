@@ -5,13 +5,25 @@
         <img class="rounded-t-lg" src="{{this.sdk.postImageURL+post['image']}}" alt="" />
     </a>
     <div class="p-5">
-        <a href="#">
+      <p *ngIf="post.members_only&&!canViewPost(post)" class="text-sm text-gray-600 flex items-center">
+        <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+        </svg>
+        Members only
+      </p>
+      <p *ngIf="post.premium&&!canViewPost(post)" class="text-sm text-gray-600 flex items-center">
+        <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+        </svg>
+        Premium
+      </p>
+        <a href="{{canViewPost(post) ? '/post/'+post._id : '#'}}">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-black">{{post['title']}}</h5>
         </a>
         <p class="mb-3 font-normal text-gray-700 text-gray-400">{{post['short_text']}}</p>
-        <a routerLink="/post/{{post._id}}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 bg-blue-600 hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        <a routerLink="{{canViewPost(post) ? '/post/'+post._id : '#'}}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 bg-blue-600 hover:bg-blue-700 dark:focus:ring-blue-800">
+          {{canViewPost(post) ? 'Read more' : 'Locked'}}
+            <svg *ngIf="canViewPost(post)" aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
         </a>
     </div>
 </div>
@@ -19,16 +31,22 @@
 <h2 class="text-center font-bold text-xl m-5">Esplora tutti i post</h2>
 <div class="m-2 grid gap-4 grid-cols-2 grid-rows-2">
     <div *ngFor="let post of this.all_post;">
-      <a routerLink="/post/{{post._id}}" class="max-w-sm w-full lg:max-w-full lg:flex">
+      <a routerLink="{{canViewPost(post) ? '/post/'+post._id : '#'}}" class="max-w-sm w-full lg:max-w-full lg:flex">
       <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('{{this.sdk.postImageURL+post.image}}')" title="Woman holding a mug">
       </div>
       <div class="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
         <div class="mb-8">
-          <p *ngIf="post.members_only" class="text-sm text-gray-600 flex items-center">
+          <p *ngIf="post.members_only&&!canViewPost(post)" class="text-sm text-gray-600 flex items-center">
             <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
             </svg>
             Members only
+          </p>
+          <p *ngIf="post.premium&&!canViewPost(post)" class="text-sm text-gray-600 flex items-center">
+            <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+            </svg>
+            Premium
           </p>
           <div class="text-gray-900 font-bold text-xl mb-2">{{post['title']}}</div>
           <p class="text-gray-700 text-base">{{post['short_text']}}</p>

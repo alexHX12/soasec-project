@@ -74,6 +74,26 @@ module.exports={
     //image
     getSinglePost: async function(req,res,next){
         single_post=await Post.findById(req.params.id);
+        if(single_post.members_only){
+            if(!jwtVerify(req,res)){
+                return
+            }
+            if(!req.jwt_decoded.scope.includes("read:post_members")){
+                res.status(401);
+                res.end();
+                return
+            }
+        }
+        if(single_post.premium){
+            if(!jwtVerify(req,res)){
+                return
+            }
+            if(!req.jwt_decoded.scope.includes("read:post_premium")){
+                res.status(401);
+                res.end();
+                return
+            }
+        }
         single_post.views++;
         await single_post.save();
         user_info=await authSdk.getUserInfo(single_post.user_id);
@@ -83,7 +103,17 @@ module.exports={
         res.send(single_post);
     },
     addPost: async function(req,res,next){
-        if(jwtVerify(req,res)){
+        if(jwtVerify(req,res)&&req.jwt_decoded.scope.includes("write:post")){
+            if(req.body.members_only=="true"&&!req.jwt_decoded.scope.includes("write:post_members")){
+                res.status(401);
+                res.end();
+                return
+            }
+            if(req.body.premium=="true"&&!req.jwt_decoded.scope.includes("write:post_premium")){
+                res.status(401);
+                res.end();
+                return
+            }
             const path_tokens = req.file.path.split('/');
             user_info=await authSdk.getUserInfo(req.jwt_decoded.sub);
             new_post_req={
@@ -92,6 +122,7 @@ module.exports={
                 "short_text":req.body.short_text,
                 "text":req.body.text,
                 "members_only":req.body.members_only=="true",
+                "premium":req.body.premium=="true",
                 "author":user_info.name,
                 "title":req.body.title,
                 "image":path_tokens[2]

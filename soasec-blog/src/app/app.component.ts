@@ -91,7 +91,9 @@ export class AppComponent {
       this.user_info={
         "name":id_token.name,
         "email":id_token.email,
-        "image":id_token.image
+        "image":id_token.image,
+        "member":id_token.roles.includes("Member"),
+        "premium":id_token.roles.includes("Premium"),
       }
     }else if(this.sdk.isLoggedInOnDomainSite()&&window.location.search==""){
       this.sdk.login()

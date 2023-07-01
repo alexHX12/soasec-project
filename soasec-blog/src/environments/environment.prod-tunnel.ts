@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    client_id:'6473fd06f869ab9cf94b6db5',
+    client_id:'64a08628fa06ca2db07f043d',
     authServer: 'https://auth.x-tunnel.net',
     apiServer: 'https://api.x-tunnel.net',
     redirectURL: 'https://blog.x-tunnel.net',

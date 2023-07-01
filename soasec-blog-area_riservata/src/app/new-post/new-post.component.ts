@@ -13,6 +13,7 @@ export class NewPostComponent {
   @ViewChild('text_data') text_data: ElementRef | undefined;
   @ViewChild('image_data') image_data: ElementRef | undefined;
   @ViewChild('members_only') members_only: ElementRef | undefined;
+  @ViewChild('premium') premium: ElementRef | undefined;
 
   post_added=false;
 
@@ -33,6 +34,7 @@ export class NewPostComponent {
     var text=this.text_data?.nativeElement.value;
     var image=this.image_data?.nativeElement.files[0];
     var members_only=this.members_only?.nativeElement.checked?"true":"false"
+    var premium=this.premium?.nativeElement.checked?"true":"false"
     if(title==""||title==undefined||short_text==""||short_text==undefined||text==""||text==undefined||image==undefined){
       return
     }
@@ -41,7 +43,8 @@ export class NewPostComponent {
       "short_text":short_text,
       "text":text,
       "image":image,
-      "members_only":members_only
+      "members_only":members_only,
+      "premium":premium
     }).subscribe(res=>{
       this.post_added=true;
     })

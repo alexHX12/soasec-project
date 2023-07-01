@@ -81,15 +81,19 @@ module.exports = {
                         app_roles=el.roles;
                     }
                 });
-                c_client.roles.forEach(c_app_role => {
-                    app_roles.forEach(u_app_role => {
-                        if(c_app_role._id==u_app_role){
-                            c_app_role.scopes.forEach(c_app_scope => {
-                                app_scopes.push(c_app_scope);
-                            });
-                        }
+                if(app_roles!=null){
+                    c_client.roles.forEach(c_app_role => {
+                        app_roles.forEach(u_app_role => {
+                            if(c_app_role._id==u_app_role){
+                                c_app_role.scopes.forEach(c_app_scope => {
+                                    if(!app_scopes.includes(c_app_scope)){
+                                        app_scopes.push(c_app_scope);
+                                    }
+                                });
+                            }
+                        });
                     });
-                });
+                }
             }
 
             res.render("approve-scopes.ejs", {

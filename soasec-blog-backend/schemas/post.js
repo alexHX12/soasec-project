@@ -15,6 +15,11 @@ const post = new Schema(
       required: true
     },
 
+    premium: {
+      type: Boolean,
+      required: true
+    },
+
     author: {
       type: String,
       required: true,
