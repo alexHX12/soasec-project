@@ -86,10 +86,11 @@ module.exports = {
         code_verifier = req.body.code_verifier
         redirect_url = req.body.redirect_url
         state = req.body.state
+        audience = req.body.audience
         const session = await dbConnection.connectToDB().startSession();
         session.withTransaction(async () => {
             c_client = await verifyClient.verifyClientConfExt(client_id, redirect_url, authorization_code)
-            if (c_client == null || code_verifier == undefined || state == undefined) {
+            if (c_client == null || code_verifier == undefined || state == undefined || audience == undefined) {
                 basicError.invalidRequest(res)
                 return
             }
@@ -140,7 +141,7 @@ module.exports = {
             c_client.code_challenges.pull(codeT)
             c_client.authorization_codes.pull(auth_code_obj)
             res.json({
-                "access_token": generator.genAccessToken(c_client,user),
+                "access_token": generator.genAccessToken(c_client,user,audience),
                 "id_token": generator.genIDToken(c_client,user)
             })
             //for some reason that the humanity can't explain why this must be the last operation
@@ -158,7 +159,8 @@ module.exports = {
     getM2MToken: async function (req, res, next) {
         client_id = req.body.client_id;
         client_secret = req.body.client_secret;
-        if (client_id == undefined || client_id == "" || client_secret == undefined || client_secret == "") {
+        audience = req.body.audience;
+        if (client_id == undefined || client_id == "" || client_secret == undefined || client_secret == "" || audience==undefined) {
             basicError.invalidRequest(res);
             return;
         }
@@ -173,7 +175,7 @@ module.exports = {
             return
         }
         res.json({
-            "access_token": generator.genAccessToken(m2m_client, m2m_client)
+            "access_token": generator.genAccessToken(m2m_client, m2m_client, audience)
         })
     }
 }

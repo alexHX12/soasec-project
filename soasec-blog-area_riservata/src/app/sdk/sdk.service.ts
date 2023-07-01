@@ -42,7 +42,7 @@ export class SdkService {
   }
 
   public isLoggedIn(){
-    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""&&this.getIDToken().aud==this.client_id&&this.getAccessToken().aud==this.client_id;
+    return this.getCookieValue("id_token")!=""&&this.getCookieValue("access_token")!=""&&this.getIDToken().aud==this.redirect_url.split('?')[0];
   }
 
   public login() {
@@ -50,7 +50,7 @@ export class SdkService {
     var state=uuid.v4()
     localStorage.setItem("codeVerifier",btoa(codeVerifier));
     var codeChallenge=btoa(sha256(codeVerifier))
-    window.location.replace(this.auth_url + "/auth?client_id=" + this.client_id + "&redirect_url=" + this.redirect_url + "&code_challenge=" + codeChallenge + "&state=" + state);
+    window.location.replace(this.auth_url + "/auth?client_id=" + this.client_id + "&redirect_url=" + this.redirect_url + "&code_challenge=" + codeChallenge + "&state=" + state+"&audience="+this.url);
   }
 
   public getToken(authorization_code: string, state: string) {
@@ -60,7 +60,8 @@ export class SdkService {
         "redirect_url": this.redirect_url,
         "code_verifier": localStorage.getItem("codeVerifier"),
         "auth_code": authorization_code,
-        "state": state
+        "state": state,
+        "audience": this.url
       }
       this.http
         .post(this.auth_url+'/token', JSON.stringify(payload),

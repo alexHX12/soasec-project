@@ -9,7 +9,7 @@ class authSdk {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ "client_id": "647a788799e5d8ae17cf0481", "client_secret": "6f03ded0-4fde-486e-9d07-0d7b55e30267" })
+                    body: JSON.stringify({ "client_id": "647a788799e5d8ae17cf0481", "client_secret": "6f03ded0-4fde-486e-9d07-0d7b55e30267", "audience": "http://auth:3000" })
                 })
             } catch (error) {
                 console.log("Retrying getting Auth token...");

@@ -11,7 +11,7 @@ module.exports = {
         return code;
     },
     
-    genAccessToken:function (client_app,user){
+    genAccessToken:function (client_app,user,audience){
         app_roles=null;
         app_scopes=[];
         if(user.app_roles!=undefined&&client_app.roles!=undefined){
@@ -31,7 +31,7 @@ module.exports = {
             });
         }
         payload= {
-            "aud":client_app._id,
+            "aud":audience,
             "iss":"auth_server",
             "sub":user._id,
             "exp":Date.now()+1000*1200,
@@ -43,7 +43,7 @@ module.exports = {
 
     genIDToken: function(client_app,user){
         payload= {
-            "aud":client_app._id,
+            "aud":client_app.redirect_url.split('?')[0],        //for now OK
             "iss":"auth_server",
             "sub":user._id,
             "exp":Date.now()+1000*1200,
