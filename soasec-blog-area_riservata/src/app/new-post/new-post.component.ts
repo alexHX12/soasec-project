@@ -16,9 +16,24 @@ export class NewPostComponent {
   @ViewChild('premium') premium: ElementRef | undefined;
 
   post_added=false;
+  user_info:any=undefined;
 
   constructor(public sdk:SdkService) {
 
+  }
+
+  ngOnInit(): void {
+    if(this.sdk.isLoggedIn()){
+      var id_token:any=this.sdk.getIDToken();
+      this.user_info={
+        "name":id_token.name,
+        "email":id_token.email,
+        "image":id_token.image,
+        "member":id_token.roles.includes("Member"),
+        "premium":id_token.roles.includes("Premium"),
+      }
+      console.log(this.user_info);
+    }
   }
 
   toBase64 = (file: Blob) => new Promise((resolve, reject) => {
